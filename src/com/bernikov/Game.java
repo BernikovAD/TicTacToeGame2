@@ -11,7 +11,7 @@ public class Game {
     private final char FIELD_USER = 935;
     private final char EMPTY_CHAR = ' ';
     private final char EMPTY_CHAR1 = ' ';
-    private double infinity = 0;
+    private int infinity = -10;
 
     public Game() { }
 
@@ -76,13 +76,15 @@ public class Game {
                 for (int j = 0; j < cells.length; j++)
                     if (cells[i][j].getField() == EMPTY_CHAR) {
                         cells[i][j].setField(FIELD_PC);
-                        double score = minimax(cells, 0, false);
+                        int score = minimax(cells, 0, false);
                         cells[i][j].setField(EMPTY_CHAR);
                         System.out.println("["+ i + " " + j + "] score " + score);
                         if (score > infinity) {
                             infinity = score;
-                            x = i;
-                            y = j;
+//                            x = i;
+//                            y = j;
+                            x = j;
+                            y = i;
                         }
                     }
             System.out.println(y + " " + x);
@@ -131,8 +133,8 @@ public class Game {
         return 0;
     }
 
-    private double minimax(Cell[][] cells, int depth, Boolean isMax) {
-        double score = evaluate(cells);
+    private int minimax(Cell[][] cells, int depth, Boolean isMax) {
+        int score = evaluate(cells);
         // Если Maximizer(игрок 1) выиграл игру
         if (score == 1) return score;
         // Если Minimizer(игрок 2/компьютер) выиграл игру
@@ -142,7 +144,8 @@ public class Game {
         // Если ход этого максимизатора(игрок 1)
         if (isMax)
         {
-            double best = infinity *-1;
+//            double best = infinity *-1;
+            int best = -100;
             // Обход всех ячеек
             for (int i = 0; i < cells.length; i++)
                 for (int j = 0; j < cells.length; j++)
@@ -153,8 +156,9 @@ public class Game {
                         cells[i][j].setField(FIELD_USER);
                         // Вызываем минимаксный рекурсив и выбираем
                         // максимальное значение
-                        double bestScore = minimax(cells, depth + 1, false);
-                        best = Math.max(best,bestScore);
+//                        double bestScore = minimax(cells, depth + 1, false);
+//                        best = Math.max(best,bestScore);
+                        best = Math.max(best, minimax(cells, depth + 1, !isMax));
                         // Отменить движение
                         cells[i][j].setField(EMPTY_CHAR);
                     }
@@ -163,7 +167,8 @@ public class Game {
         //(игрок 2/компьютер)
         else
         {
-            double best = infinity;
+//            int best = infinity;
+            int best = 100;
             // Обход всех ячеек
             for (int i = 0; i < cells.length; i++)
                 for (int j = 0; j < cells.length; j++)
@@ -174,8 +179,9 @@ public class Game {
                         cells[i][j].setField(FIELD_PC);
                         // Вызываем минимаксный рекурсив и выбираем
                         // минимальное значение
-                        double bestScore = minimax(cells, depth + 1, true);
-                        best = Math.min(best,bestScore);
+//                        double bestScore = minimax(cells, depth + 1, true);
+//                        best = Math.min(best,bestScore);
+                        best = Math.min(best,minimax(cells, depth + 1, !isMax));
                         // Отменить движение
                         cells[i][j].setField(EMPTY_CHAR);
                     }
