@@ -1,7 +1,12 @@
 package com.bernikov;
 
 public class Cell {
-    char field,fieldDraw;
+    char field;
+    boolean Shot= false;
+
+    public boolean isShot() { return Shot; }
+
+    public void setShot(boolean shot) { Shot = shot; }
 
     public Cell() { }
 
@@ -12,4 +17,6 @@ public class Cell {
     public char getField() {
         return this.field;
     }
+
+
 }
